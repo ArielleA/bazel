@@ -68,7 +68,14 @@ genrule(
 
 pkg_deb(
     name = "bazel-debian",
-    architecture = "amd64",
+    architecture = select({
+        "//src/conditions:linux_aarch64": [
+            "aarch64",
+        ],
+        "//conditions:default": [
+            "amd64",
+        ],
+    }),
     built_using = "bazel (HEAD)",
     data = ":debian-data",
     depends = [

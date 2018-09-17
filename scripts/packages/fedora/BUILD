@@ -9,7 +9,14 @@ load("//tools/build_defs/pkg:rpm.bzl", "pkg_rpm")
 
 pkg_rpm(
     name = "bazel",
-    architecture = "x86_64",
+    architecture = select({
+        "//src/conditions:linux_aarch64": [
+            "aarch64",
+        ],
+        "//conditions:default": [
+            "x86_64",
+        ],
+    }),
     changelog = "//:changelog-file",
     data = [
         "//scripts:bash_completion",
